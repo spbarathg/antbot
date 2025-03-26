@@ -1,0 +1,41 @@
+[helius]
+# Helius RPC for real-time blockchain updates
+mainnet = "https://mainnet.helius-rpc.com/?api-key=YOUR_HELIUS_API_KEY"
+devnet = "https://devnet.helius-rpc.com/?api-key=YOUR_HELIUS_API_KEY"
+testnet = "https://testnet.helius-rpc.com/?api-key=YOUR_HELIUS_API_KEY"
+
+# WebSocket endpoints for real-time updates
+ws_mainnet = "wss://mainnet.helius-rpc.com/?api-key=YOUR_HELIUS_API_KEY"
+ws_devnet = "wss://devnet.helius-rpc.com/?api-key=YOUR_HELIUS_API_KEY"
+
+[triton]
+# Triton RPC for optimized transaction broadcasting
+mainnet = "https://triton.mainnet.rpcpool.com"
+devnet = "https://triton.devnet.rpcpool.com"
+
+# Triton-specific settings
+max_retries = 3
+timeout_ms = 5000
+priority_fee_multiplier = 1.5
+
+[jito]
+# Jito-Solana RPC for MEV protection and fast transactions
+mainnet = "https://jito-api.mainnet.solana.com"
+devnet = "https://jito-api.devnet.solana.com"
+
+# Jito-specific settings
+auth_token = "YOUR_JITO_AUTH_TOKEN"
+max_retries = 3
+timeout_ms = 3000
+
+[rpc_strategy]
+# RPC selection strategy for different operations
+monitoring = "helius"      # For price and liquidity monitoring
+trading = "triton"        # For executing trades
+mev_protection = "jito"   # For MEV-sensitive operations
+
+# Fallback configuration
+primary_rpc = "helius"
+fallback_rpcs = ["triton", "jito"]
+retry_delay_ms = 1000
+max_fallback_attempts = 3 

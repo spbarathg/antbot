@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+.ant-status {
+  @apply px-2 py-1 text-xs font-medium rounded-full;
+}
+
+.ant-status-active {
+  @apply bg-green-100 text-green-800;
+}
+
+.ant-status-inactive {
+  @apply bg-red-100 text-red-800;
+}
+
+.ant-status-pending {
+  @apply bg-yellow-100 text-yellow-800;
+} 

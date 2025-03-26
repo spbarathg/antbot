@@ -1,0 +1,45 @@
+[exchanges]
+birdeye = "YOUR_BIRDEYE_API_KEY"
+
+[ai]
+openai = "YOUR_OPENAI_API_KEY"
+
+[security]
+# Store encrypted API keys here
+encrypted_keys = []
+
+[helius]
+api_key = "YOUR_HELIUS_API_KEY"
+
+[jito]
+auth_token = "YOUR_JITO_AUTH_TOKEN"
+
+[market_data]
+# Birdeye API for market data and analytics
+birdeye_api_key = "YOUR_BIRDEYE_API_KEY"
+birdeye_secret = "YOUR_BIRDEYE_SECRET"
+
+# DexScreener API for DEX analytics
+dexscreener_api_key = "YOUR_DEXSCREENER_API_KEY"
+
+[ai_services]
+# OpenAI API for GPT-4 predictions
+openai_api_key = "YOUR_OPENAI_API_KEY"
+openai_org_id = "YOUR_OPENAI_ORG_ID"
+
+# Optional: Additional AI services
+cohere_api_key = "YOUR_COHERE_API_KEY"  # For sentiment analysis
+tensorflow_api_key = "YOUR_TENSORFLOW_API_KEY"  # For custom ML models
+
+[exchange]
+# Exchange API keys (if needed)
+binance_api_key = "YOUR_BINANCE_API_KEY"
+binance_secret = "YOUR_BINANCE_SECRET"
+
+[security]
+# Encryption keys for sensitive data
+encryption_key = "YOUR_ENCRYPTION_KEY"
+key_rotation_days = 30
+
+# Note: All API keys should be encrypted at rest and only decrypted when needed
+# Consider using environment variables or a secure key management service in production 

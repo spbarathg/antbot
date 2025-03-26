@@ -1,0 +1,57 @@
+[general]
+# Application runtime settings
+log_level = "info"
+data_dir = "./data"
+temp_dir = "./temp"
+
+# Trading parameters
+max_concurrent_trades = 5
+min_liquidity_usd = 10000
+max_slippage_percentage = 1.0
+default_gas_multiplier = 1.2
+
+# Risk management
+max_position_size_usd = 1000
+max_daily_loss_usd = 100
+max_daily_trades = 50
+stop_loss_percentage = 5.0
+take_profit_percentage = 15.0
+
+[python_integration]
+# Python environment settings
+python_path = "python"
+virtual_env_path = "./venv"
+requirements_file = "./python/requirements.txt"
+
+# AI model settings
+gpt_model = "gpt-4"
+max_tokens = 1000
+temperature = 0.7
+prediction_threshold = 0.75
+
+# Python module paths
+ai_oracle_path = "./python/ai_oracle.py"
+liquidity_monitor_path = "./python/liquidity_monitor.py"
+transaction_pipeline_path = "./python/transaction_pipeline.py"
+
+[logging]
+# Log file paths
+sniping_core_log = "./logs/sniping_core.log"
+ant_colony_log = "./logs/ant_colony.log"
+error_log = "./logs/error.log"
+
+# Log rotation settings
+max_log_size_mb = 100
+max_log_files = 5
+
+[rust]
+max_threads = 4
+transaction_timeout = 30
+
+[python]
+interpreter_path = "python"
+max_workers = 4
+
+[frontend]
+port = 3000
+host = "localhost" 
