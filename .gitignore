@@ -50,4 +50,8 @@ htmlcov/
 # Temporary files
 *.tmp
 *.temp
-.cache/ 
+.cache/
+
+# Target directory
+/target/
+target/ 
