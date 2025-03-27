@@ -8,17 +8,52 @@
   body {
     @apply bg-black text-white font-montserrat;
     font-family: 'Montserrat', sans-serif;
+    background: radial-gradient(circle at top right, #1a1a1a 0%, #000000 100%);
+  }
+
+  h1 {
+    @apply text-4xl font-bold;
+  }
+
+  h2 {
+    @apply text-3xl font-semibold;
+  }
+
+  h3 {
+    @apply text-2xl font-medium;
+  }
+
+  p {
+    @apply text-base leading-relaxed;
+  }
+
+  /* Custom Scrollbar Styles */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-900;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-700 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-600;
   }
 }
 
 @layer components {
   .terminal {
-    @apply bg-black border border-gray-800 rounded-lg p-4 font-mono text-sm;
+    @apply bg-black/50 border border-gray-800/50 rounded-lg p-4 font-mono text-sm backdrop-blur-sm;
     font-family: 'Montserrat', monospace;
   }
 
   .terminal-line {
-    @apply text-gray-300 mb-1;
+    @apply text-gray-300 mb-3 py-1;
   }
 
   .terminal-success {
@@ -26,7 +61,7 @@
   }
 
   .terminal-error {
-    @apply text-red-400;
+    @apply text-[#E57373];
   }
 
   .terminal-info {
@@ -34,7 +69,11 @@
   }
 
   .card {
-    @apply bg-background border border-border rounded-card shadow-card p-6 transition-all duration-200 hover:shadow-lg;
+    @apply bg-black/50 border border-gray-800/50 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-purple-500/10 hover:border-purple-500/20 backdrop-blur-sm;
+  }
+
+  .card-hover {
+    @apply hover:scale-[1.02] hover:shadow-purple-500/20;
   }
 
   .btn {
@@ -42,26 +81,68 @@
   }
 
   .btn-primary {
-    @apply bg-accent text-background hover:bg-opacity-90;
+    @apply bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800 shadow-lg shadow-purple-500/20;
   }
 
   .btn-secondary {
-    @apply border border-border text-text-primary hover:bg-accent hover:text-background hover:border-accent;
+    @apply border border-gray-700 text-text-primary hover:bg-purple-500/10 hover:border-purple-500/50;
   }
 
   .input {
-    @apply bg-background border border-border rounded-md px-4 py-2 text-text-primary focus:outline-none focus:border-accent transition-colors duration-200;
+    @apply bg-black/50 border border-gray-800/50 rounded-md px-4 py-2 text-text-primary focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-colors duration-200 backdrop-blur-sm;
   }
 
   .toast {
-    @apply fixed bottom-4 right-4 p-4 rounded-md shadow-lg max-w-md z-50;
+    @apply fixed bottom-4 right-4 p-4 rounded-md shadow-lg max-w-md z-50 backdrop-blur-sm;
   }
 
   .toast-success {
-    @apply bg-green-900 text-white border-l-4 border-green-500;
+    @apply bg-green-900/80 text-white border-l-4 border-green-500;
   }
 
   .toast-error {
-    @apply bg-red-900 text-white border-l-4 border-red-500;
+    @apply bg-red-900/80 text-white border-l-4 border-red-500;
   }
+
+  .text-h2 {
+    @apply text-2xl font-semibold;
+  }
+
+  .text-body {
+    @apply text-base text-text-primary;
+  }
+
+  .icon-hover {
+    @apply transition-transform duration-200 hover:scale-110;
+  }
+
+  .refresh-icon {
+    @apply inline-block ml-2 transition-transform duration-500 hover:rotate-180;
+  }
+
+  .log-group {
+    @apply mb-6 last:mb-0;
+  }
+
+  .log-timestamp {
+    @apply text-xs text-gray-500 mb-2;
+  }
+
+  .log-entries {
+    @apply space-y-2;
+  }
+
+  .status-icon {
+    @apply inline-block mr-2;
+  }
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 } 
