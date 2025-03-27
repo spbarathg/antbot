@@ -5,6 +5,10 @@
 @tailwind utilities;
 
 @layer base {
+  html, body {
+    @apply h-full overflow-hidden;
+  }
+
   body {
     @apply bg-black text-white font-montserrat;
     font-family: 'Montserrat', sans-serif;
@@ -29,31 +33,29 @@
 
   /* Custom Scrollbar Styles */
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-gray-900;
+    @apply bg-gray-900/50 rounded-full;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-gray-700 rounded-full;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-600;
+    @apply bg-gray-700/50 rounded-full hover:bg-gray-600/50 transition-colors duration-200;
   }
 }
 
 @layer components {
   .terminal {
-    @apply bg-black/50 border border-gray-800/50 rounded-lg p-4 font-mono text-sm backdrop-blur-sm;
+    @apply bg-black/50 border border-gray-800/50 rounded-lg p-6 font-mono text-sm backdrop-blur-sm;
     font-family: 'Montserrat', monospace;
+    height: calc(100vh - 14rem);
+    min-height: 0;
   }
 
   .terminal-line {
-    @apply text-gray-300 mb-3 py-1;
+    @apply text-gray-300 mb-5 py-2.5;
   }
 
   .terminal-success {
@@ -69,7 +71,9 @@
   }
 
   .card {
-    @apply bg-black/50 border border-gray-800/50 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-purple-500/10 hover:border-purple-500/20 backdrop-blur-sm;
+    @apply bg-black/50 border border-gray-800/50 rounded-xl shadow-lg p-8 transition-all duration-300 hover:shadow-purple-500/10 hover:border-purple-500/20 backdrop-blur-sm;
+    height: calc((100vh - 20rem) / 4);
+    min-height: 130px;
   }
 
   .card-hover {
@@ -77,7 +81,7 @@
   }
 
   .btn {
-    @apply px-4 py-2 rounded-md font-medium transition-all duration-200;
+    @apply px-6 py-3 rounded-md font-medium transition-all duration-200;
   }
 
   .btn-primary {
@@ -89,11 +93,11 @@
   }
 
   .input {
-    @apply bg-black/50 border border-gray-800/50 rounded-md px-4 py-2 text-text-primary focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-colors duration-200 backdrop-blur-sm;
+    @apply bg-black/50 border border-gray-800/50 rounded-md px-6 py-3 text-text-primary focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-colors duration-200 backdrop-blur-sm;
   }
 
   .toast {
-    @apply fixed bottom-4 right-4 p-4 rounded-md shadow-lg max-w-md z-50 backdrop-blur-sm;
+    @apply fixed bottom-8 right-8 p-6 rounded-md shadow-lg max-w-md z-50 backdrop-blur-sm;
   }
 
   .toast-success {
@@ -117,23 +121,53 @@
   }
 
   .refresh-icon {
-    @apply inline-block ml-2 transition-transform duration-500 hover:rotate-180;
+    @apply inline-block ml-3 transition-transform duration-500 hover:rotate-180;
   }
 
   .log-group {
-    @apply mb-6 last:mb-0;
+    @apply mb-10 last:mb-0;
   }
 
   .log-timestamp {
-    @apply text-xs text-gray-500 mb-2;
+    @apply text-xs text-gray-500 mb-4;
   }
 
   .log-entries {
-    @apply space-y-2;
+    @apply space-y-4;
   }
 
   .status-icon {
-    @apply inline-block mr-2;
+    @apply inline-block mr-4;
+  }
+
+  .dashboard-container {
+    @apply h-screen p-16 overflow-hidden;
+  }
+
+  .dashboard-grid {
+    @apply h-full grid grid-cols-12 gap-16;
+  }
+
+  .wallet-container {
+    @apply h-full flex flex-col gap-12 overflow-hidden;
+  }
+
+  /* Portfolio Value Card Specific Styles */
+  .portfolio-card {
+    @apply mb-8;
+  }
+
+  .portfolio-value {
+    @apply text-4xl font-bold mb-2;
+  }
+
+  .last-updated {
+    @apply text-xs text-gray-500 mt-4;
+  }
+
+  /* Token Cards Container */
+  .token-cards-container {
+    @apply flex flex-col gap-8;
   }
 }
 
