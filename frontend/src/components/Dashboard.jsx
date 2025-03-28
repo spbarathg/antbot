@@ -3,7 +3,6 @@ import { useApp } from '../context/AppContext';
 import {
   CurrencyDollarIcon,
   WalletIcon,
-  ArrowPathIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
   InformationCircleIcon,
@@ -11,18 +10,11 @@ import {
 
 function Dashboard() {
   const { state, dispatch } = useApp();
-  const { botStatus, isLoading } = state;
-  const [balance, setBalance] = useState(65432.10);
-  const [wallets, setWallets] = useState([
-    { id: 1, name: 'SOL', balance: '125.5', value: '15,687' },
-    { id: 2, name: 'BONK', balance: '15,700,000', value: '22,345' },
-    { id: 3, name: 'WIF', balance: '850,000', value: '18,700' },
-    { id: 4, name: 'MYRO', balance: '2,500,000', value: '12,500' },
-  ]);
+  const { isLoading } = state;
+  const [balance, setBalance] = useState(0);
+  const [wallets, setWallets] = useState([]);
   const [terminalOutput, setTerminalOutput] = useState([
     { timestamp: new Date().toLocaleTimeString(), type: 'info', message: 'Solana Memecoin Bot Initialized' },
-    { timestamp: new Date().toLocaleTimeString(), type: 'trade', message: 'Opening long position BONK/SOL @ 0.000001452' },
-    { timestamp: new Date().toLocaleTimeString(), type: 'info', message: 'Monitoring Solana memecoin market conditions...' },
   ]);
 
   useEffect(() => {
@@ -39,6 +31,11 @@ function Dashboard() {
           message: `Bot status: ${data.bot_status}, Portfolio Value: $${data.total_balance}, Active trades: ${data.active_trades}`
         }]);
 
+        // Fetch wallet data
+        const walletsResponse = await fetch('http://localhost:8080/wallets');
+        const walletsData = await walletsResponse.json();
+        setWallets(walletsData);
+
         dispatch({ type: 'SET_LOADING', payload: false });
       } catch (error) {
         setTerminalOutput(prev => [...prev, {
@@ -54,6 +51,30 @@ function Dashboard() {
     const interval = setInterval(fetchData, 30000);
     return () => clearInterval(interval);
   }, [dispatch]);
+
+  useEffect(() => {
+    const wsUrl = process.env.REACT_APP_WS_URL || 'ws://localhost:8080/ws';
+    const ws = new WebSocket(wsUrl);
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      setTerminalOutput(prev => [...prev, {
+        timestamp: new Date().toLocaleTimeString(),
+        type: data.type,
+        message: data.message
+      }]);
+    };
+
+    ws.onerror = (error) => {
+      setTerminalOutput(prev => [...prev, {
+        timestamp: new Date().toLocaleTimeString(),
+        type: 'error',
+        message: 'WebSocket connection error: ' + error.message
+      }]);
+    };
+
+    return () => ws.close();
+  }, []);
 
   const getStatusIcon = (type) => {
     switch (type) {
@@ -103,9 +124,8 @@ function Dashboard() {
             <div className="text-3xl font-bold text-purple-500 mb-3">
               ${balance.toLocaleString()}
             </div>
-            <div className="text-white/50 text-sm font-medium flex items-center">
+            <div className="text-white/50 text-sm font-medium">
               Last updated: {new Date().toLocaleTimeString()}
-              <ArrowPathIcon className="w-4 h-4 ml-2 text-purple-500 refresh-icon" />
             </div>
           </div>
         </div>

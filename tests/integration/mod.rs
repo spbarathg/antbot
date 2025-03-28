@@ -9,6 +9,8 @@ use anyhow::Result;
 use tokio::time::{sleep, Duration};
 use std::path::PathBuf;
 
+mod full_system_workflow;
+
 #[tokio::test]
 async fn test_sniping_ant_colony_integration() -> Result<()> {
     // Initialize components
