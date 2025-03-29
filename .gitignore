@@ -1,5 +1,5 @@
 # Dependencies
-/node_modules
+**/node_modules/
 /.pnp
 .pnp.js
 /venv
@@ -154,6 +154,15 @@ cover/
 /config/development
 /config/production
 /config/test
+
+# Frontend specific
+**/node_modules/
+/frontend/build
+/frontend/.next
+/frontend/out
+.next/
+*.tsbuildinfo
+.vercel
 
 npm-debug.log*
 yarn-debug.log*

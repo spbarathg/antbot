@@ -48,10 +48,271 @@ max_log_files = 5
 max_threads = 4
 transaction_timeout = 30
 
-[python]
-interpreter_path = "python"
-max_workers = 4
+[sniping_core]
+is_active = true
 
-[frontend]
-port = 3000
-host = "localhost" 
+[sniping_core.coin_scanner]
+scan_interval = 1
+batch_size = 100
+max_concurrent_scans = 4
+min_liquidity = 10000.0
+min_holders = 50
+min_market_cap = 50000.0
+
+[sniping_core.coin_analyzer]
+min_confidence = 0.7
+max_risk_score = 0.7
+cache_duration = 300  # 5 minutes in seconds
+
+[api_keys]
+openai = "your-openai-api-key"
+birdeye = "your-birdeye-api-key"
+
+[monitoring]
+min_liquidity = 10000.0
+liquidity_drop_threshold = 20.0
+liquidity_surge_threshold = 50.0
+
+[analysis]
+min_confidence = 0.7
+max_risk_score = 0.7
+social_volume_threshold = 100.0
+
+[ant_colony.profit_manager]
+min_profit_threshold = 0.1  # Minimum profit in USD before considering a sell
+gas_price_window = 100     # Number of gas price samples to keep for averaging
+volatility_window = 24     # Hours of price history to use for volatility calculation
+max_trade_age = 24        # Maximum age of trades in hours
+
+[ant_colony.profit_tiers]
+tier_1_multiplier = 1.5
+tier_1_percentage = 0.25
+tier_1_gas_buffer = 1.2
+tier_1_volatility_adjustment = 0.1
+
+tier_2_multiplier = 2.0
+tier_2_percentage = 0.25
+tier_2_gas_buffer = 1.5
+tier_2_volatility_adjustment = 0.15
+
+tier_3_multiplier = 5.0
+tier_3_percentage = 0.25
+tier_3_gas_buffer = 2.0
+tier_3_volatility_adjustment = 0.2
+
+tier_4_multiplier = 10.0
+tier_4_percentage = 0.25
+tier_4_gas_buffer = 2.5
+tier_4_volatility_adjustment = 0.25
+
+[ant_colony.capital_manager]
+worker_ant_budget = 20.0
+max_active_workers = 15
+min_active_workers = 10
+initial_capital = 300.0
+
+[ant_colony.princess]
+max_position_size = 20.0
+min_position_size = 5.0
+initial_balance = 20.0
+max_concurrent_trades = 5
+risk_threshold = 0.8
+
+[ant_colony.queen]
+reinvestment_threshold = 1000.0
+risk_threshold = 0.8
+initial_capital = 1000.0
+
+[ant_colony.worker]
+reinvestment_threshold = 100.0
+profit_distribution = 0.5
+
+[ant_colony.rug_detector]
+price_drop_threshold = 0.5      # 50% price drop threshold
+volume_drop_threshold = 0.7     # 70% volume drop threshold
+liquidity_drop_threshold = 0.6  # 60% liquidity drop threshold
+holder_drop_threshold = 0.4     # 40% holder count drop threshold
+contract_risk_threshold = 0.8   # Contract risk score threshold
+history_window = 24            # Hours of history to maintain
+
+[ant_colony.rug_detector.contract_analysis]
+slither_path = "./tools/slither"
+min_holders = 50
+min_liquidity = 10000.0
+max_owner_percentage = 0.5     # 50% max owner wallet percentage
+max_tax_percentage = 0.1       # 10% max tax percentage
+check_honeypot = true
+check_mint_function = true
+check_blacklist = true
+check_pausable = true
+check_ownership = true
+
+[ant_colony.rug_detector.emergency_exit]
+max_slippage = 0.1            # 10% max slippage for emergency exits
+min_liquidity_for_exit = 5000.0
+gas_multiplier = 2.0          # Double gas price for emergency exits
+timeout_seconds = 30
+
+[ant_colony.transaction_handler]
+jito_rpc_url = "https://jito-api.mainnet-beta.solana.com"
+helius_rpc_url = "https://mainnet.helius-rpc.com"
+jito_check_interval = 30        # Check Jito health every 30 seconds
+max_retries = 3                 # Maximum number of retry attempts
+retry_delay_ms = 100           # Delay between retries in milliseconds
+bundle_size = 5                # Maximum number of transactions per bundle
+min_priority_fee = 1000        # Minimum priority fee in lamports
+max_priority_fee = 10000       # Maximum priority fee in lamports
+
+[ant_colony.transaction_handler.jito]
+health_check_endpoint = "https://jito-api.mainnet-beta.solana.com/health"
+max_response_time_ms = 50      # Maximum acceptable response time
+min_success_rate = 0.95        # Minimum success rate threshold
+bundle_timeout_ms = 100        # Maximum time to wait for bundle execution
+
+[ant_colony.transaction_handler.helius]
+health_check_endpoint = "https://mainnet.helius-rpc.com/health"
+max_response_time_ms = 200     # Maximum acceptable response time
+min_success_rate = 0.90        # Minimum success rate threshold
+transaction_timeout_ms = 500   # Maximum time to wait for transaction execution
+
+[ant_colony.transaction_handler.gas_optimization]
+dynamic_gas_adjustment = true
+gas_price_window = 100         # Number of gas price samples to keep
+min_gas_multiplier = 1.1       # Minimum gas price multiplier
+max_gas_multiplier = 2.0       # Maximum gas price multiplier
+gas_price_update_interval = 10 # Update gas price every 10 seconds
+
+[ant_colony.performance_monitor]
+check_interval = 30            # Check performance every 30 minutes
+success_rate_threshold_low = 0.3  # 30% success rate threshold for scaling down
+success_rate_threshold_high = 0.6 # 60% success rate threshold for scaling up
+min_workers = 10              # Minimum number of active workers
+max_workers = 50              # Maximum number of active workers
+metrics_window = 24           # Hours of metrics history to keep
+
+[ant_colony.performance_monitor.scaling]
+scale_down_factor = 0.7       # Reduce workers by 30% when scaling down
+scale_up_factor = 1.2         # Increase workers by 20% when scaling up
+min_scale_interval = 15       # Minimum minutes between scaling operations
+max_scale_interval = 60       # Maximum minutes between scaling operations
+
+[ant_colony.performance_monitor.metrics]
+execution_time_threshold_ms = 200  # Maximum acceptable execution time
+gas_fee_threshold_sol = 0.1        # Maximum acceptable gas fee
+profit_threshold_sol = 0.5         # Minimum profit threshold for scaling up
+loss_threshold_sol = 0.2           # Maximum loss threshold for scaling down
+
+[ant_colony.performance_monitor.ai_adjustment]
+confidence_threshold_min = 0.5     # Minimum AI confidence threshold
+confidence_threshold_max = 0.9     # Maximum AI confidence threshold
+confidence_adjustment_factor = 0.1 # Factor for adjusting confidence threshold
+risk_threshold_min = 0.5           # Minimum risk threshold
+risk_threshold_max = 0.9           # Maximum risk threshold
+risk_adjustment_factor = 0.1       # Factor for adjusting risk threshold
+
+[ant_colony.performance_monitor.alerting]
+enable_alerts = true
+alert_success_rate_threshold = 0.2  # Alert if success rate drops below 20%
+alert_execution_time_threshold = 500 # Alert if execution time exceeds 500ms
+alert_gas_fee_threshold = 0.2        # Alert if gas fee exceeds 0.2 SOL
+alert_profit_threshold = 1.0         # Alert if profit exceeds 1 SOL
+alert_loss_threshold = 0.5           # Alert if loss exceeds 0.5 SOL
+
+[ant_colony.reinvestment_manager]
+check_interval = 30            # Check profits every 30 minutes
+reinvestment_rate = 0.8        # 80% of profits to reinvest
+reserve_rate = 0.2            # 20% of profits to reserve
+min_reinvestment_amount = 0.1  # Minimum amount to reinvest
+max_reinvestment_amount = 10.0 # Maximum amount to reinvest
+min_reserve_amount = 1.0      # Minimum reserve amount
+metrics_window = 24           # Hours of metrics history to keep
+
+[ant_colony.reinvestment_manager.worker_allocation]
+min_worker_budget = 0.5       # Minimum budget per worker
+max_worker_budget = 5.0       # Maximum budget per worker
+allocation_strategy = "equal" # equal, weighted, or dynamic
+weight_factor = 0.7          # Factor for weighted allocation
+performance_threshold = 0.6   # Performance threshold for dynamic allocation
+
+[ant_colony.reinvestment_manager.reserve]
+stablecoin_address = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" # USDC
+min_reserve_percentage = 0.1  # Minimum reserve as percentage of total capital
+max_reserve_percentage = 0.3  # Maximum reserve as percentage of total capital
+reserve_rebalance_interval = 24 # Hours between reserve rebalancing
+
+[ant_colony.reinvestment_manager.risk_management]
+max_daily_reinvestment = 50.0 # Maximum daily reinvestment amount
+max_position_size = 5.0       # Maximum position size per reinvestment
+min_profit_threshold = 0.5    # Minimum profit threshold for reinvestment
+max_drawdown_threshold = 0.2  # Maximum drawdown threshold before reducing reinvestment
+
+[ant_colony.reinvestment_manager.monitoring]
+track_reinvestment_performance = true
+performance_window = 24       # Hours to track reinvestment performance
+min_success_rate = 0.4       # Minimum success rate for continued reinvestment
+max_loss_rate = 0.3          # Maximum loss rate before reducing reinvestment
+profit_target_multiplier = 1.5 # Target profit multiplier for reinvested capital
+
+[api]
+host = "localhost"
+port = 8080
+birdeye_key = ""  # Set via environment variable
+openai_key = ""   # Set via environment variable
+jito_key = ""     # Set via environment variable
+
+[database]
+host = "localhost"
+port = 5432
+name = "antbot"
+user = "postgres"
+password = ""  # Set via environment variable
+
+[redis]
+url = "redis://localhost:6379/0"
+ttl = 300  # Default TTL in seconds
+
+[security]
+master_secret = ""  # Set via environment variable
+api_secret = ""     # Set via environment variable
+jwt_secret = ""     # Set via environment variable
+jwt_ttl = 3600      # JWT token TTL in seconds
+
+[bot]
+max_concurrent_transactions = 10
+min_liquidity = 1000.0
+liquidity_drop_threshold = 20.0
+liquidity_surge_threshold = 50.0
+cache_ttl_minutes = 5
+max_retries = 3
+retry_delay = 1.0
+success_rate_threshold = 0.6
+min_success_rate = 0.3
+transaction_cost_limit = 900.0
+ai_budget = 50.0
+max_helius_rpc_usage = 0.05
+
+[monitoring]
+log_level = "INFO"
+log_file = "logs/antbot.log"
+max_log_size = 10485760  # 10MB
+backup_count = 5
+metrics_port = 9090
+enable_prometheus = true
+
+[ant_colony]
+princess_budget = 100.0
+reinvestment_rate = 0.8
+vault_rate = 0.2
+max_princesses = 50
+min_workers = 5
+max_workers = 20
+sentry_check_interval = 60  # seconds
+
+[sniping]
+min_confidence = 0.7
+max_risk_score = 0.3
+min_holders = 100
+min_market_cap = 50000.0
+max_slippage = 0.05
+jito_bundle_size = 10
+max_bundle_cost = 900.0 
