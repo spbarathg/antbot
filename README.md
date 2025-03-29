@@ -1,261 +1,241 @@
-# AntBot Project Structure
+# AntBot - Advanced Trading Bot
 
 ## Overview
-AntBot is a sophisticated trading bot that combines Python, Rust, and React components to provide advanced trading capabilities. The system uses an Ant Colony optimization approach for efficient trading and risk management.
+AntBot is a sophisticated trading bot that leverages Ant Colony Optimization (ACO) principles to execute efficient trading strategies on the Solana blockchain. The system combines Python, Rust, and React technologies to provide a robust, scalable, and user-friendly trading solution.
 
-## Project Structure
+## Features
+- 🤖 AI-powered price prediction and analysis
+- 🐜 Ant Colony Optimization for trade execution
+- 📊 Real-time market monitoring and analysis
+- 🔒 Advanced security and risk management
+- 💰 Automated profit collection and reinvestment
+- 📱 Modern React-based dashboard
+- 🔄 Real-time WebSocket updates
+- 📈 Performance analytics and reporting
 
-```
-antbot/
-├── backend/
-│   ├── python/           # Python backend components
-│   │   ├── ai_oracle.py
-│   │   ├── liquidity_monitor.py
-│   │   ├── transaction_pipeline.py
-│   │   ├── coin_analyzer.py
-│   │   ├── security.py
-│   │   ├── cache.py
-│   │   ├── database.py
-│   │   ├── error_handling.py
-│   │   ├── logger.py
-│   │   ├── api_client.py
-│   │   └── config_manager.py
-│   └── rust/            # Rust backend components
-│       ├── ant_colony/  # Ant Colony optimization system
-│       │   ├── queen.rs
-│       │   ├── princess.rs
-│       │   ├── worker.rs
-│       │   ├── drone.rs
-│       │   ├── sentry.rs
-│       │   ├── rug_detector.rs
-│       │   ├── profit_manager.rs
-│       │   ├── capital_manager.rs
-│       │   └── transaction_handler.rs
-│       ├── api/         # API endpoints and WebSocket server
-│       ├── rpc/         # RPC client management
-│       ├── common/      # Shared data structures
-│       ├── config/      # Configuration management
-│       └── logging.rs   # Logging system
-├── frontend/           # React frontend
-│   ├── src/
-│   │   ├── components/
-│   │   ├── context/
-│   │   ├── styles/
-│   │   ├── App.jsx
-│   │   └── index.js
-│   ├── public/
-│   ├── package.json
-│   └── tailwind.config.js
-├── config/            # Global configuration files
-├── scripts/          # Utility scripts
-├── tests/           # Test files
-├── logs/            # Application logs
-├── .env             # Environment variables
-├── requirements.txt # Python dependencies
-└── Cargo.toml       # Rust dependencies
-```
-
-## Component Descriptions
+## System Architecture
 
 ### Backend Components
 
-#### Python Backend
-- `ai_oracle.py`: AI-powered price prediction and analysis
-- `liquidity_monitor.py`: Real-time liquidity monitoring
-- `transaction_pipeline.py`: Transaction processing and management
-- `coin_analyzer.py`: Coin analysis and metrics calculation
-- `security.py`: Security and authentication
-- `cache.py`: Caching system
-- `database.py`: Database operations
-- `error_handling.py`: Error handling and logging
-- `logger.py`: Logging system
-- `api_client.py`: API client for external services
-- `config_manager.py`: Configuration management
+#### Python Services
+- **AI Oracle**: Price prediction and market analysis
+- **Liquidity Monitor**: Real-time liquidity tracking
+- **Transaction Pipeline**: Order processing and management
+- **Coin Analyzer**: Token analysis and metrics
+- **Security Module**: Authentication and encryption
+- **Cache System**: Performance optimization
+- **Database Operations**: Data persistence
+- **Error Handling**: Robust error management
+- **Logging System**: Comprehensive logging
+- **API Client**: External service integration
+- **Config Manager**: System configuration
 
-#### Rust Backend
-- `ant_colony/`: Ant Colony optimization system
-  - `queen.rs`: Central coordinator managing colony state
-  - `princess.rs`: Handles individual trading operations
-  - `worker.rs`: Manages profit collection and reinvestment
-  - `drone.rs`: Monitors and allocates capital
-  - `sentry.rs`: Monitors for risks and security threats
-  - `rug_detector.rs`: Detects potential rug pulls
-  - `profit_manager.rs`: Manages profit-taking strategies
-  - `capital_manager.rs`: Handles capital allocation
-  - `transaction_handler.rs`: Manages transaction execution
-- `api/`: WebSocket server and API endpoints
-- `rpc/`: RPC client management for multiple providers
-- `common/`: Shared data structures and message handling
-- `config/`: Configuration management
-- `logging.rs`: Structured logging system
+#### Rust Services (Ant Colony System)
+- **Queen**: Colony coordinator and state manager
+- **Princess**: Individual trading operations
+- **Worker**: Profit collection and reinvestment
+- **Drone**: Capital monitoring and allocation
+- **Sentry**: Risk and security monitoring
+- **RugDetector**: Rug pull prevention
+- **ProfitManager**: Profit optimization
+- **CapitalManager**: Capital allocation
+- **TransactionHandler**: Transaction execution
 
 ### Frontend Components
-- React-based UI with TypeScript
-- Tailwind CSS for styling
+- Modern React/TypeScript interface
+- Tailwind CSS styling
 - Context-based state management
-- Component-based architecture
-- Real-time updates via WebSocket
+- Real-time WebSocket updates
+- Interactive charts and analytics
+- Portfolio management dashboard
+- Risk monitoring interface
+- Performance metrics display
 
-## Development Guidelines
+## Prerequisites
 
-1. **Code Organization**
-   - Keep related functionality together
-   - Use clear, descriptive file names
-   - Follow language-specific conventions
-   - Implement proper error handling
+### Required API Keys
+- Birdeye API Key (Solana blockchain data)
+- OpenAI API Key (AI/ML functionality)
+- Jito API Key (MEV services)
 
-2. **Dependencies**
-   - Python dependencies in `requirements.txt`
-   - Rust dependencies in `Cargo.toml`
-   - Frontend dependencies in `package.json`
+### Infrastructure Requirements
+- PostgreSQL Database
+- Redis Cache
+- Prometheus (optional, for monitoring)
 
-3. **Configuration**
-   - Use `.env` for environment variables
-   - Keep configuration files in the `config/` directory
-   - Follow the configuration hierarchy
-   - Validate configuration values
+## Installation
 
-4. **Testing**
-   - Write unit tests for all components
-   - Place tests in the `tests/` directory
-   - Follow test naming conventions
-   - Include integration tests
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/antbot.git
+cd antbot
+```
 
-5. **Logging**
-   - Use the centralized logging system
-   - Log files are stored in the `logs/` directory
-   - Follow logging best practices
-   - Include structured logging
+2. Install Python dependencies:
+```bash
+pip install -r requirements.txt
+```
 
-## Getting Started
+3. Install Rust dependencies:
+```bash
+cargo build
+```
 
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   # Python dependencies
-   pip install -r requirements.txt
-   
-   # Rust dependencies
-   cargo build
-   
-   # Frontend dependencies
-   cd frontend
-   npm install
-   ```
-3. Set up environment variables in `.env`
-4. Run the application:
-   ```bash
-   # Start backend
-   python backend/python/main.py
-   
-   # Start frontend
-   cd frontend
-   npm start
-   ```
+4. Install frontend dependencies:
+```bash
+cd frontend
+npm install
+```
 
-## Ant Colony System
+5. Configure environment variables:
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
 
-The system uses an Ant Colony optimization approach with specialized components:
+## Configuration
 
-1. **Queen**
-   - Manages overall colony state
-   - Controls capital allocation
-   - Monitors risk levels
-   - Coordinates all components
+### Environment Variables
+```env
+# API Configuration
+API_HOST=localhost
+API_PORT=8080
 
-2. **Princess**
-   - Executes individual trades
-   - Manages position sizing
-   - Tracks trade performance
-   - Implements exit strategies
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=antbot
+DB_USER=postgres
+DB_PASSWORD=your_password
 
-3. **Worker**
-   - Collects and distributes profits
-   - Manages reinvestment
-   - Handles vault operations
-   - Monitors collection timeouts
+# Redis Configuration
+REDIS_URL=redis://localhost:6379/0
 
-4. **Drone**
-   - Monitors market conditions
-   - Allocates capital dynamically
-   - Adjusts position sizes
-   - Manages risk exposure
+# Security Configuration
+MASTER_SECRET=your_master_secret
+API_SECRET=your_api_secret
+JWT_SECRET=your_jwt_secret
 
-5. **Sentry**
-   - Monitors for security threats
-   - Detects market anomalies
-   - Manages risk alerts
-   - Implements emergency protocols
+# API Keys
+BIRDEYE_API_KEY=your_birdeye_api_key
+OPENAI_API_KEY=your_openai_api_key
+JITO_API_KEY=your_jito_api_key
 
-6. **RugDetector**
-   - Analyzes contract risks
-   - Monitors liquidity changes
-   - Tracks holder behavior
-   - Detects potential rug pulls
+# Bot Configuration
+BOT_API_KEY=your_bot_api_key
+LOG_LEVEL=INFO
+LOG_FILE=logs/antbot.log
+```
 
-7. **ProfitManager**
-   - Implements profit-taking strategies
-   - Manages position scaling
-   - Optimizes gas costs
-   - Tracks performance metrics
+## Running the Application
 
-8. **CapitalManager**
-   - Manages capital allocation
-   - Handles position sizing
-   - Implements reserve requirements
-   - Monitors capital efficiency
+1. Start the backend services:
+```bash
+# Start Python services
+python backend/python/main.py
 
-9. **TransactionHandler**
-   - Manages transaction execution
-   - Optimizes gas costs
-   - Handles RPC providers
-   - Implements retry logic
+# Start Rust services
+cargo run --release
+```
 
-## Risk Management
+2. Start the frontend:
+```bash
+cd frontend
+npm start
+```
 
-The system implements multiple layers of risk management:
+## Trading Workflow
 
-1. **Position Sizing**
-   - Fixed budget per Ant Princess
-   - Dynamic scaling based on market conditions
-   - Automatic reduction during bear markets
-   - Reserve capital requirements
+1. **Market Analysis**
+   - AI Oracle analyzes market conditions
+   - Liquidity Monitor tracks token liquidity
+   - Coin Analyzer evaluates token metrics
 
-2. **Exit Strategies**
-   - Multi-tier profit-taking
-   - Sentiment-based exits
-   - Liquidity monitoring
-   - Emergency exit protocols
+2. **Strategy Execution**
+   - Queen coordinates colony activities
+   - Princess executes individual trades
+   - Worker manages profit collection
+   - Drone optimizes capital allocation
 
-3. **Network Protection**
-   - Multi-RPC architecture
-   - Automatic trading freeze
-   - Transaction optimization
-   - Gas cost management
+3. **Risk Management**
+   - Sentry monitors for security threats
+   - RugDetector prevents rug pulls
+   - Capital Manager controls position sizing
+   - Transaction Handler optimizes execution
 
-4. **Security Measures**
-   - Contract risk analysis
-   - Rug pull detection
-   - Liquidity monitoring
-   - Sentiment analysis
+4. **Performance Optimization**
+   - Cache system improves response times
+   - Multi-RPC architecture ensures reliability
+   - Gas optimization for cost efficiency
+   - Real-time monitoring and adjustments
 
-## Performance Monitoring
+## Expected Results
 
-The system tracks various performance metrics:
+### Trading Performance
+- Consistent profit generation through ACO optimization
+- Reduced risk through multi-layer protection
+- Efficient capital utilization
+- Optimized transaction costs
 
-- Success rate per trading cycle
+### System Performance
+- Real-time market data processing
+- Low-latency trade execution
+- Reliable error handling
+- Comprehensive logging and monitoring
+
+### User Experience
+- Intuitive dashboard interface
+- Real-time portfolio updates
+- Detailed performance analytics
+- Risk monitoring and alerts
+
+## Monitoring and Maintenance
+
+### Logging
+- Comprehensive system logs
+- Error tracking and reporting
+- Performance metrics
+- Security event monitoring
+
+### Metrics
+- Trading success rate
 - Transaction execution times
-- RPC usage and costs
+- RPC performance
 - Profit distribution
 - Risk event detection
-- Capital efficiency
-- Gas optimization
-- System health
+
+## Security Considerations
+
+1. **API Security**
+   - Secure key management
+   - Rate limiting
+   - Request validation
+   - Error handling
+
+2. **Data Protection**
+   - Encrypted storage
+   - Secure communication
+   - Access control
+   - Audit logging
+
+3. **Trading Safety**
+   - Position limits
+   - Risk controls
+   - Emergency protocols
+   - Backup systems
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Disclaimer
+## Support
 
-This bot is for educational purposes only. Cryptocurrency trading carries significant risks, and past performance does not guarantee future results. Always trade responsibly and never invest more than you can afford to lose. 
+For support, please open an issue in the GitHub repository or contact the development team. 
