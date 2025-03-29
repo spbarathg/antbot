@@ -316,4 +316,59 @@ h3 {
 
 .status-indicator-text {
   @apply text-sm font-medium;
+}
+
+/* Terminal Log Entry Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.terminal-log-entry {
+  animation: fadeInUp 0.2s ease-out forwards;
+}
+
+/* Terminal Scrollbar */
+.terminal-scrollbar::-webkit-scrollbar {
+  width: 2px;
+}
+
+.terminal-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.terminal-scrollbar::-webkit-scrollbar-thumb {
+  background: #00FF00;
+  opacity: 0.5;
+}
+
+.terminal-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #00FF00 transparent;
+}
+
+/* Terminal Blink Animation */
+@keyframes terminalBlink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.animate-terminal-blink {
+  animation: terminalBlink 1s step-end infinite;
+}
+
+/* Terminal Scan Animation */
+@keyframes scan {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+
+.animate-scan {
+  animation: scan 2s linear infinite;
 } 

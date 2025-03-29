@@ -63,10 +63,10 @@ export const EnhancedChart: React.FC<ChartProps> = ({
     maintainAspectRatio: false,
     animation: {
       duration: 750,
-      easing: 'easeInOutQuart' as const,
+      easing: 'easeInOutQuart',
     },
     interaction: {
-      mode: 'index' as const,
+      mode: 'index',
       intersect: false,
     },
     plugins: {
@@ -75,10 +75,16 @@ export const EnhancedChart: React.FC<ChartProps> = ({
       },
       tooltip: {
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        titleColor: '#fff',
-        bodyColor: '#fff',
+        titleColor: '#00FF00',
+        bodyColor: '#00FF00',
         padding: 12,
         displayColors: false,
+        titleFont: {
+          family: 'monospace',
+        },
+        bodyFont: {
+          family: 'monospace',
+        },
         callbacks: {
           label: (context) => {
             return `$${context.parsed.y.toLocaleString()}`;
@@ -88,38 +94,41 @@ export const EnhancedChart: React.FC<ChartProps> = ({
       zoom: {
         pan: {
           enabled: true,
-          mode: 'x' as const,
-          onPanComplete: () => setIsZoomed(true),
+          mode: 'x',
         },
         zoom: {
           wheel: {
             enabled: true,
-            modifierKey: 'ctrl',
           },
           pinch: {
             enabled: true,
           },
-          mode: 'x' as const,
-          onZoomComplete: () => setIsZoomed(true),
+          mode: 'x',
         },
       },
     },
     scales: {
       y: {
         grid: {
-          color: 'rgba(255, 255, 255, 0.1)',
+          color: 'rgba(0, 255, 0, 0.1)',
         },
         ticks: {
-          color: '#A0AEC0',
+          color: '#00FF00',
+          font: {
+            family: 'monospace',
+          },
           callback: (value) => `$${value.toLocaleString()}`,
         },
       },
       x: {
         grid: {
-          color: 'rgba(255, 255, 255, 0.1)',
+          color: 'rgba(0, 255, 0, 0.1)',
         },
         ticks: {
-          color: '#A0AEC0',
+          color: '#00FF00',
+          font: {
+            family: 'monospace',
+          },
         },
       },
     },

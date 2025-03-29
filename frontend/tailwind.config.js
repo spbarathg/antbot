@@ -61,6 +61,9 @@ module.exports = {
         'slide-out': 'slideOut 0.3s ease-in',
         'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'float': 'float 3s ease-in-out infinite',
+        'scan': 'scan 2s linear infinite',
+        'terminal-blink': 'blink 1s step-end infinite',
+        'glitch': 'glitch 0.3s ease-in-out',
       },
       keyframes: {
         fadeIn: {
@@ -82,6 +85,19 @@ module.exports = {
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' },
+        },
+        scan: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
+        blink: {
+          '0%, 50%': { opacity: '1' },
+          '51%, 100%': { opacity: '0' },
+        },
+        glitch: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '33%': { transform: 'translateX(2px)' },
+          '66%': { transform: 'translateX(-2px)' },
         },
       },
       backgroundImage: {

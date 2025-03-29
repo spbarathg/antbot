@@ -25,7 +25,7 @@ const Sidebar: React.FC = () => {
 
   const navItems = [
     { path: '/', label: 'Dashboard', icon: HomeIcon },
-    { path: '/trades', label: 'Live Trades', icon: ChartBarIcon },
+    { path: '/analytics', label: 'Analytics', icon: ChartBarIcon },
     { path: '/settings', label: 'Settings', icon: Cog6ToothIcon },
   ];
 
