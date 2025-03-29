@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
 
 const AppContext = createContext();
 
@@ -29,6 +29,7 @@ const initialState = {
   recentActivity: [],
   isLoading: false,
   error: null,
+  wsConnected: false,
 };
 
 function reducer(state, action) {
@@ -48,6 +49,8 @@ function reducer(state, action) {
       return { ...state, isLoading: action.payload };
     case 'SET_ERROR':
       return { ...state, error: action.payload };
+    case 'SET_WS_CONNECTED':
+      return { ...state, wsConnected: action.payload };
     default:
       return state;
   }
@@ -56,12 +59,8 @@ function reducer(state, action) {
 export function AppProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // WebSocket connection for real-time updates
-  useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8080/ws');
-
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
+  const handleWebSocketMessage = useCallback((data) => {
+    try {
       switch (data.type) {
         case 'bot_status':
           dispatch({ type: 'SET_BOT_STATUS', payload: data.payload });
@@ -72,15 +71,82 @@ export function AppProvider({ children }) {
         case 'activity':
           dispatch({ type: 'ADD_ACTIVITY', payload: data.payload });
           break;
+        case 'error':
+          dispatch({ type: 'SET_ERROR', payload: data.message });
+          break;
+        default:
+          console.warn('Unknown WebSocket message type:', data.type);
+      }
+    } catch (error) {
+      console.error('Error handling WebSocket message:', error);
+      dispatch({ type: 'SET_ERROR', payload: 'Error processing server message' });
+    }
+  }, []);
+
+  // WebSocket connection
+  useEffect(() => {
+    let ws = null;
+    let reconnectTimeout = null;
+    let retryCount = 0;
+    const MAX_RETRIES = 5;
+
+    const connect = () => {
+      try {
+        const wsUrl = process.env.REACT_APP_WS_URL || 'ws://localhost:8080/ws';
+        ws = new WebSocket(wsUrl);
+
+        ws.onopen = () => {
+          console.log('WebSocket connected');
+          dispatch({ type: 'SET_WS_CONNECTED', payload: true });
+          dispatch({ type: 'SET_ERROR', payload: null });
+          retryCount = 0;
+        };
+
+        ws.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            handleWebSocketMessage(data);
+          } catch (error) {
+            console.error('Failed to parse WebSocket message:', error);
+          }
+        };
+
+        ws.onerror = (error) => {
+          console.error('WebSocket error:', error);
+          dispatch({ type: 'SET_ERROR', payload: 'WebSocket connection error' });
+          dispatch({ type: 'SET_WS_CONNECTED', payload: false });
+        };
+
+        ws.onclose = () => {
+          dispatch({ type: 'SET_WS_CONNECTED', payload: false });
+          if (retryCount < MAX_RETRIES) {
+            const delay = Math.min(1000 * Math.pow(2, retryCount), 30000);
+            console.log(`WebSocket reconnecting in ${delay}ms...`);
+            reconnectTimeout = setTimeout(() => {
+              retryCount++;
+              connect();
+            }, delay);
+          } else {
+            dispatch({ type: 'SET_ERROR', payload: 'WebSocket connection failed after maximum retries' });
+          }
+        };
+      } catch (error) {
+        console.error('Failed to establish WebSocket connection:', error);
+        dispatch({ type: 'SET_ERROR', payload: 'Failed to establish WebSocket connection' });
       }
     };
 
-    ws.onerror = (error) => {
-      dispatch({ type: 'SET_ERROR', payload: 'WebSocket connection error' });
-    };
+    connect();
 
-    return () => ws.close();
-  }, []);
+    return () => {
+      if (ws) {
+        ws.close();
+      }
+      if (reconnectTimeout) {
+        clearTimeout(reconnectTimeout);
+      }
+    };
+  }, [handleWebSocketMessage]);
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>

@@ -1,0 +1,319 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#121212] text-text-primary font-montserrat antialiased min-h-screen;
+  }
+
+  ::selection {
+    @apply bg-accent-sol/20 text-text-primary;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-accent text-white px-6 py-2.5 rounded-button 
+           hover:opacity-90 transition-all duration-200 
+           shadow-lg hover:shadow-xl
+           font-medium tracking-wide;
+  }
+
+  .btn-secondary {
+    @apply bg-background-card text-text-primary px-6 py-2.5 rounded-button 
+           border border-border hover:border-accent-sol
+           hover:bg-background-hover transition-all duration-200
+           font-medium tracking-wide;
+  }
+
+  .card {
+    @apply bg-background-card rounded-card shadow-card p-6
+           border border-border hover:border-border-light
+           transition-all duration-300;
+  }
+
+  .card-hover {
+    @apply hover:bg-background-hover hover:shadow-card-hover;
+  }
+
+  .input {
+    @apply bg-background-secondary border border-border rounded-button 
+           px-4 py-2.5 focus:outline-none focus:border-accent-sol 
+           transition-all duration-200 text-text-primary
+           placeholder:text-text-secondary/50;
+  }
+
+  .table-row {
+    @apply border-b border-border hover:bg-background-hover 
+           transition-colors duration-200;
+  }
+
+  .badge {
+    @apply px-2 py-1 rounded-full text-xs font-medium tracking-wide;
+  }
+
+  .badge-success {
+    @apply bg-success/10 text-success shadow-glow-success;
+  }
+
+  .badge-error {
+    @apply bg-error/10 text-error shadow-glow-error;
+  }
+
+  .badge-warning {
+    @apply bg-warning/10 text-warning shadow-glow-warning;
+  }
+
+  .badge-info {
+    @apply bg-info/10 text-info shadow-glow-info;
+  }
+
+  .status-dot {
+    @apply transition-all duration-300;
+  }
+
+  .status-dot-connected {
+    @apply bg-success;
+  }
+
+  .status-dot-disconnected {
+    @apply bg-error;
+  }
+
+  .status-dot-info {
+    @apply bg-accent-sol;
+  }
+
+  .status-dot-trade {
+    @apply bg-accent-blue;
+  }
+
+  .status-dot-error {
+    @apply bg-error;
+  }
+
+  .status-dot-warning {
+    @apply bg-warning;
+  }
+
+  .metric-card {
+    @apply relative overflow-hidden transition-all duration-300;
+  }
+
+  .metric-card:hover {
+    @apply shadow-glow-accent;
+  }
+
+  .chart-control-button {
+    @apply px-3 py-1 text-sm text-text-secondary hover:text-text-primary transition-colors duration-200;
+  }
+
+  .chart-control-button-active {
+    @apply bg-white/5 text-text-primary rounded-full;
+  }
+
+  .status-indicator {
+    @apply flex items-center space-x-2;
+  }
+
+  .status-indicator-dot {
+    @apply w-2 h-2 rounded-full;
+  }
+
+  .status-indicator-text {
+    @apply text-sm font-medium;
+  }
+
+  /* Table Styles */
+  .table {
+    @apply w-full border-collapse;
+  }
+
+  .table th {
+    @apply font-medium text-text-secondary/60;
+  }
+
+  .table td {
+    @apply py-3;
+  }
+
+  .table-row-hover {
+    @apply transition-colors duration-150;
+  }
+
+  .table-row-hover:hover {
+    @apply bg-white/5;
+  }
+
+  /* Typography */
+  .text-gradient {
+    @apply bg-gradient-to-r from-accent-sol to-accent-blue bg-clip-text text-transparent;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-1.5;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-white/20;
+  }
+}
+
+/* Loading Skeleton Animation */
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton {
+  @apply bg-border;
+  background-image: linear-gradient(
+    90deg,
+    rgba(46, 46, 46, 0) 0%,
+    rgba(46, 46, 46, 0.2) 50%,
+    rgba(46, 46, 46, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+/* WebSocket Status Badge */
+.ws-status {
+  @apply fixed bottom-4 right-4 w-3 h-3 rounded-full bg-accent-blue;
+  animation: pulse-slow;
+}
+
+/* Typography */
+h1 {
+  @apply text-2xl font-semibold tracking-tight;
+}
+
+h2 {
+  @apply text-xl font-semibold tracking-tight;
+}
+
+h3 {
+  @apply text-lg font-medium tracking-tight;
+}
+
+.numbers {
+  @apply font-mono text-sm font-light tracking-tight;
+}
+
+.percentage {
+  @apply font-mono text-sm font-medium tracking-tight;
+}
+
+/* Table Styles */
+.table-container {
+  @apply overflow-x-auto rounded-card border border-border;
+}
+
+.table {
+  @apply w-full border-collapse;
+}
+
+.table th {
+  @apply text-text-secondary text-xs font-medium py-3 px-4 text-left;
+}
+
+.table td {
+  @apply py-3 px-4;
+}
+
+.table td.numeric {
+  @apply text-right;
+}
+
+/* Market Overview Cards */
+.market-card {
+  @apply card flex-1;
+}
+
+.market-separator {
+  @apply w-[1px] bg-border mx-4;
+}
+
+/* Live Feed Terminal */
+.terminal {
+  @apply card font-mono text-sm;
+}
+
+.terminal-line {
+  @apply flex items-start space-x-2 py-1;
+}
+
+.terminal-timestamp {
+  @apply text-text-secondary font-mono text-xs;
+}
+
+.terminal-icon {
+  @apply w-2 h-2 mt-1.5;
+}
+
+/* Section Spacing */
+.section-spacing {
+  @apply space-y-6;
+}
+
+/* Glass Effect */
+.glass {
+  @apply bg-background-card/80 backdrop-blur-lg border border-border/50;
+}
+
+/* Gradient Text */
+.gradient-text {
+  @apply bg-gradient-accent bg-clip-text text-transparent;
+}
+
+/* Card Grid */
+.card-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+/* Metric Card */
+.metric-card {
+  @apply card flex flex-col space-y-2;
+}
+
+.metric-label {
+  @apply text-text-secondary text-sm font-medium;
+}
+
+.metric-value {
+  @apply text-2xl font-semibold;
+}
+
+/* Chart Container */
+.chart-container {
+  @apply card p-4;
+}
+
+/* Status Indicator */
+.status-indicator {
+  @apply flex items-center space-x-2;
+}
+
+.status-indicator-dot {
+  @apply w-2 h-2 rounded-full;
+}
+
+.status-indicator-text {
+  @apply text-sm font-medium;
+} 

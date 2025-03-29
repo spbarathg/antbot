@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -10,9 +10,8 @@
   }
 
   body {
-    @apply bg-black text-white font-montserrat;
+    @apply bg-background text-text-primary antialiased;
     font-family: 'Montserrat', sans-serif;
-    background: radial-gradient(circle at top right, #1a1a1a 0%, #000000 100%);
   }
 
   h1 {
@@ -33,51 +32,50 @@
 
   /* Custom Scrollbar Styles */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-gray-900/50 rounded-full;
+    @apply bg-background-card;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-gray-700/50 rounded-full hover:bg-gray-600/50 transition-colors duration-200;
+    @apply bg-[#2E2E2E] rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-[#3E3E3E];
   }
 }
 
 @layer components {
   .terminal {
-    @apply bg-black/50 border border-gray-800/50 rounded-lg p-6 font-mono text-sm backdrop-blur-sm;
-    font-family: 'Montserrat', monospace;
-    height: calc(100vh - 14rem);
-    min-height: 0;
+    @apply bg-gradient-to-br from-[#1A1A1A] to-[#121212] rounded-lg p-6;
   }
 
   .terminal-line {
-    @apply text-gray-300 mb-5 py-2.5;
+    @apply flex items-center space-x-2 py-1 text-sm;
   }
 
   .terminal-success {
-    @apply text-green-400;
+    @apply text-[#4CAF50];
   }
 
   .terminal-error {
-    @apply text-[#E57373];
+    @apply text-[#FF5252];
   }
 
   .terminal-info {
-    @apply text-blue-400;
+    @apply text-accent;
   }
 
   .card {
-    @apply bg-black/50 border border-gray-800/50 rounded-xl shadow-lg p-8 transition-all duration-300 hover:shadow-purple-500/10 hover:border-purple-500/20 backdrop-blur-sm;
-    height: calc((100vh - 20rem) / 4);
-    min-height: 130px;
+    @apply bg-background-card rounded-card p-card-padding transition-all duration-300;
   }
 
   .card-hover {
-    @apply hover:scale-[1.02] hover:shadow-purple-500/20;
+    @apply hover:bg-background-hover;
   }
 
   .btn {
@@ -89,11 +87,11 @@
   }
 
   .btn-secondary {
-    @apply border border-gray-700 text-text-primary hover:bg-purple-500/10 hover:border-purple-500/50;
+    @apply border border-[#2E2E2E] text-text-primary hover:bg-purple-500/10 hover:border-purple-500/50;
   }
 
   .input {
-    @apply bg-black/50 border border-gray-800/50 rounded-md px-6 py-3 text-text-primary focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-colors duration-200 backdrop-blur-sm;
+    @apply bg-black/50 border border-[#2E2E2E] rounded-md px-6 py-3 text-text-primary focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 transition-colors duration-200 backdrop-blur-sm;
   }
 
   .toast {
@@ -101,11 +99,11 @@
   }
 
   .toast-success {
-    @apply bg-green-900/80 text-white border-l-4 border-green-500;
+    @apply bg-green-900/80 text-white border-l-4 border-[#4CAF50];
   }
 
   .toast-error {
-    @apply bg-red-900/80 text-white border-l-4 border-red-500;
+    @apply bg-red-900/80 text-white border-l-4 border-[#FF5252];
   }
 
   .text-h2 {
@@ -125,49 +123,56 @@
   }
 
   .log-group {
-    @apply mb-10 last:mb-0;
+    @apply mb-4;
   }
 
   .log-timestamp {
-    @apply text-xs text-gray-500 mb-4;
+    @apply text-[#7F7F7F] text-sm mb-2;
   }
 
   .log-entries {
-    @apply space-y-4;
+    @apply space-y-1;
   }
 
   .status-icon {
-    @apply inline-block mr-4;
+    @apply flex-shrink-0;
   }
 
   .dashboard-container {
     @apply h-screen p-16 overflow-hidden;
   }
 
-  .dashboard-grid {
-    @apply h-full grid grid-cols-12 gap-16;
+  .metric-card {
+    @apply bg-gradient-to-br from-[#1A1A1A] to-[#121212] rounded-lg p-6 transition-all duration-300 hover:from-[#202020] hover:to-[#161616];
   }
 
-  .wallet-container {
-    @apply h-full flex flex-col gap-12 overflow-hidden;
+  .metric-label {
+    @apply text-[#7F7F7F] text-sm mb-2;
   }
 
-  /* Portfolio Value Card Specific Styles */
-  .portfolio-card {
-    @apply mb-8;
+  .metric-value {
+    @apply text-3xl font-bold;
   }
 
-  .portfolio-value {
-    @apply text-4xl font-bold mb-2;
+  .status-indicator {
+    @apply flex items-center space-x-2 text-sm;
   }
 
-  .last-updated {
-    @apply text-xs text-gray-500 mt-4;
+  .status-indicator-dot {
+    @apply w-2 h-2 rounded-full;
   }
 
-  /* Token Cards Container */
-  .token-cards-container {
-    @apply flex flex-col gap-8;
+  .status-indicator-text {
+    @apply text-[#7F7F7F];
+  }
+
+  .view-all-link {
+    @apply text-xs text-[#7F7F7F] hover:text-text-primary transition-colors duration-200;
+  }
+
+  /* Monospace font for numbers */
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
   }
 }
 
@@ -179,4 +184,31 @@
 
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.loading-pulse {
+  @apply animate-pulse bg-background-hover;
+}
+
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-50;
+}
+
+.hover-lift {
+  @apply transition-transform duration-300 hover:-translate-y-1;
 } 
