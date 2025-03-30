@@ -28,14 +28,24 @@ ChartJS.register(
   zoomPlugin
 );
 
-interface ChartProps {
-  data: ChartData<'line'>;
+interface EnhancedChartProps {
+  data: {
+    labels: string[];
+    datasets: {
+      label: string;
+      data: number[];
+      borderColor: string;
+      backgroundColor: string;
+      fill: boolean;
+      tension: number;
+    }[];
+  };
   title: string;
-  height?: number;
+  height: number;
   onRangeChange?: (range: string) => void;
 }
 
-export const EnhancedChart: React.FC<ChartProps> = ({
+export const EnhancedChart: React.FC<EnhancedChartProps> = ({
   data,
   title,
   height = 400,
@@ -61,41 +71,28 @@ export const EnhancedChart: React.FC<ChartProps> = ({
   const options: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
-    animation: {
-      duration: 750,
-      easing: 'easeInOutQuart',
-    },
-    interaction: {
-      mode: 'index',
-      intersect: false,
-    },
     plugins: {
       legend: {
         display: false,
       },
       tooltip: {
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        titleColor: '#00FF00',
-        bodyColor: '#00FF00',
+        mode: 'index',
+        intersect: false,
+        backgroundColor: '#1E293B',
+        titleColor: '#E2E8F0',
+        bodyColor: '#E2E8F0',
+        borderColor: '#334155',
+        borderWidth: 1,
         padding: 12,
         displayColors: false,
-        titleFont: {
-          family: 'monospace',
-        },
-        bodyFont: {
-          family: 'monospace',
-        },
         callbacks: {
           label: (context) => {
-            return `$${context.parsed.y.toLocaleString()}`;
+            const value = context.parsed.y;
+            return `$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
           },
         },
       },
       zoom: {
-        pan: {
-          enabled: true,
-          mode: 'x',
-        },
         zoom: {
           wheel: {
             enabled: true,
@@ -103,75 +100,54 @@ export const EnhancedChart: React.FC<ChartProps> = ({
           pinch: {
             enabled: true,
           },
-          mode: 'x',
+        },
+        pan: {
+          enabled: true,
         },
       },
     },
     scales: {
-      y: {
-        grid: {
-          color: 'rgba(0, 255, 0, 0.1)',
-        },
-        ticks: {
-          color: '#00FF00',
-          font: {
-            family: 'monospace',
-          },
-          callback: (value) => `$${value.toLocaleString()}`,
-        },
-      },
       x: {
         grid: {
-          color: 'rgba(0, 255, 0, 0.1)',
+          display: false,
+          drawOnChartArea: false
         },
         ticks: {
-          color: '#00FF00',
-          font: {
-            family: 'monospace',
-          },
+          color: '#94A3B8',
+          maxRotation: 0,
+        },
+      },
+      y: {
+        grid: {
+          color: '#334155',
+          drawOnChartArea: true
+        },
+        ticks: {
+          color: '#94A3B8',
+          callback: (value) => `$${Number(value).toLocaleString()}`,
         },
       },
     },
   };
 
   return (
-    <div className="bg-background-card rounded-card shadow-card p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg font-semibold">{title}</h2>
-        <div className="flex items-center space-x-4">
-          <div className="flex space-x-2">
-            {['1h', '24h', '7d', '30d'].map((range) => (
-              <button
-                key={range}
-                onClick={() => handleRangeChange(range as typeof timeRange)}
-                className={`px-3 py-1 rounded-button text-sm transition-colors ${
-                  timeRange === range
-                    ? 'bg-accent text-white'
-                    : 'bg-background-hover hover:bg-border'
-                }`}
-              >
-                {range}
-              </button>
-            ))}
-          </div>
-          {isZoomed && (
-            <button
-              onClick={handleResetZoom}
-              className="px-3 py-1 rounded-button text-sm bg-background-hover hover:bg-border transition-colors"
-            >
-              Reset Zoom
-            </button>
-          )}
-        </div>
+    <div className="relative">
+      <div className="absolute top-0 right-0 z-10 flex space-x-2">
+        {isZoomed && (
+          <button
+            onClick={handleResetZoom}
+            className="px-3 py-1 text-sm bg-background-hover text-text-primary rounded-button hover:bg-accent/10 transition-colors"
+          >
+            Reset Zoom
+          </button>
+        )}
       </div>
-      <div style={{ height }} className="relative">
-        <Line
-          ref={chartRef}
-          data={data}
-          options={options}
-          className="transition-opacity duration-200"
-        />
-      </div>
+      <Line
+        ref={chartRef}
+        data={data}
+        options={options}
+        height={height}
+      />
     </div>
   );
 }; 

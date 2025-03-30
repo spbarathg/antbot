@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Grid, Typography, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import CoreMetrics from './CoreMetrics';
-import MarketOverview from './MarketOverview';
-import ProfitTimeline from './ProfitTimeline';
-import TradeHistory from './TradeHistory';
-import RiskCheck from './RiskCheck';
+import PortfolioValue from './PortfolioValue';
+import TopTrades from './TopTrades';
+import AntGenerations from './AntGenerations';
 import { COLORS, TYPOGRAPHY, SPACING, commonStyles } from './theme';
 
 // Import JetBrains Mono font
@@ -69,7 +67,6 @@ const SectionTitle = styled(Typography)(({ theme }) => ({
 
 const Analytics: React.FC = () => {
   const theme = useTheme();
-  const [timeRange, setTimeRange] = useState<'24H' | '7D' | 'ALL'>('24H');
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -96,36 +93,22 @@ const Analytics: React.FC = () => {
   return (
     <AnalyticsContainer>
       <Grid container spacing={SPACING.section}>
-        {/* Performance Overview Section */}
+        {/* Portfolio Value Section */}
         <Grid item xs={12}>
-          <SectionTitle>Performance Overview</SectionTitle>
-          <Grid container spacing={SPACING.section}>
-            <Grid item xs={12} md={4}>
-              <CoreMetrics />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <MarketOverview />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <RiskCheck />
-            </Grid>
-          </Grid>
+          <SectionTitle>Portfolio Value</SectionTitle>
+          <PortfolioValue />
         </Grid>
 
-        {/* Portfolio Performance Section */}
+        {/* Top Trades Section */}
         <Grid item xs={12}>
-          <SectionTitle>Portfolio Performance</SectionTitle>
-          <MetricCard>
-            <ProfitTimeline />
-          </MetricCard>
+          <SectionTitle>Top Trades</SectionTitle>
+          <TopTrades />
         </Grid>
 
-        {/* Trade History Section */}
+        {/* Ant Generations Section */}
         <Grid item xs={12}>
-          <SectionTitle>Trade History</SectionTitle>
-          <MetricCard>
-            <TradeHistory timeRange={timeRange} onTimeRangeChange={setTimeRange} />
-          </MetricCard>
+          <SectionTitle>Ant Generations</SectionTitle>
+          <AntGenerations />
         </Grid>
       </Grid>
     </AnalyticsContainer>

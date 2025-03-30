@@ -1,15 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Dashboard from './components/Dashboard';
-import { Analytics } from './components/Analytics';
+import Analytics from './components/Analytics';
+import Settings from './components/Settings';
 import Sidebar from './components/Sidebar';
 import { AppProvider } from './context/AppContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import './index.css';
-import RecentTradesTable from './components/RecentTradesTable';
-import MarketOverview from './components/MarketOverview';
-import LiveFeed from './components/LiveFeed';
-import WebSocketStatus from './components/WebSocketStatus';
 
 // Import Montserrat font
 import '@fontsource/montserrat/400.css';
@@ -22,12 +19,14 @@ const App: React.FC = () => {
     <ErrorBoundary>
       <AppProvider>
         <Router>
-          <div className="h-screen bg-background font-montserrat flex overflow-hidden">
+          <div className="h-screen bg-background-primary font-montserrat flex overflow-hidden">
             <Sidebar />
-            <main className="flex-1 ml-16 p-4 bg-background">
+            <main className="flex-1 p-6 overflow-y-auto transition-all duration-sidebar ease-in-out" 
+                  style={{ marginLeft: 'var(--sidebar-width, 4rem)' }}>
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/analytics" element={<Analytics />} />
+                <Route path="/settings" element={<Settings />} />
                 {/* Add other routes as needed */}
               </Routes>
             </main>

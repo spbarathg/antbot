@@ -2,7 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { EnhancedChart } from './EnhancedChart';
 import { format } from 'date-fns';
 import { useApp } from '../context/AppContext';
-import { ArrowTrendingUpIcon, ArrowTrendingDownIcon } from '@heroicons/react/24/outline';
+import { 
+  StarIcon,
+  SparklesIcon,
+  BugAntIcon
+} from '@heroicons/react/24/solid';
 
 interface ChartDataPoint {
   timestamp: Date;
@@ -15,20 +19,6 @@ interface StatusResponse {
   active_trades: number;
 }
 
-interface PerformanceMetric {
-  timestamp: string;
-  value: number;
-  change: number;
-}
-
-interface TradeMetrics {
-  totalTrades: number;
-  successRate: number;
-  avgProfitLoss: number;
-  bestTrade: number;
-  worstTrade: number;
-}
-
 interface Trade {
   timestamp: string;
   pair: string;
@@ -36,23 +26,80 @@ interface Trade {
   price: number;
   amount: number;
   profit?: number;
+  ant: string;
+  profitPercentage: number;
+}
+
+interface AntStatus {
+  id: string;
+  type: 'queen' | 'princess' | 'worker';
+  status: 'active' | 'inactive';
+  currentTask?: string;
+  capitalAllocated?: number;
+  activeTrades?: number;
 }
 
 type TimePeriod = '1h' | '24h' | '7d' | '30d';
 
-export const Analytics: React.FC = () => {
+const Analytics: React.FC = () => {
   const { dispatch } = useApp();
   const [chartData, setChartData] = useState<ChartDataPoint[]>([]);
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>('24h');
   const [chartHeight, setChartHeight] = useState(400);
-  const [metrics, setMetrics] = React.useState<TradeMetrics>({
-    totalTrades: 156,
-    successRate: 68.5,
-    avgProfitLoss: 12.3,
-    bestTrade: 45.2,
-    worstTrade: -15.8
-  });
-  const [sentiment, setSentiment] = React.useState<'bullish' | 'bearish'>('bullish');
+
+  // Mock data for colony status
+  const colonyStatus: AntStatus[] = [
+    {
+      id: 'queen-1',
+      type: 'queen',
+      status: 'active',
+      capitalAllocated: 75,
+      activeTrades: 12
+    },
+    {
+      id: 'princess-1',
+      type: 'princess',
+      status: 'active',
+      currentTask: 'High-Priority Trade: XYZ/USDC',
+      activeTrades: 3
+    },
+    {
+      id: 'princess-2',
+      type: 'princess',
+      status: 'active',
+      currentTask: 'Monitoring Market Conditions',
+      activeTrades: 2
+    },
+    {
+      id: 'worker-1',
+      type: 'worker',
+      status: 'active',
+      currentTask: 'Executing SOL/USDC Trade'
+    },
+    {
+      id: 'worker-2',
+      type: 'worker',
+      status: 'active',
+      currentTask: 'Monitoring JUP/USDC Position'
+    },
+    {
+      id: 'worker-3',
+      type: 'worker',
+      status: 'inactive',
+      currentTask: 'Waiting for Signals'
+    }
+  ];
+
+  const getAntIcon = (type: AntStatus['type']) => {
+    switch (type) {
+      case 'queen':
+        return <StarIcon className="w-6 h-6 text-accent-primary" />;
+      case 'princess':
+        return <SparklesIcon className="w-6 h-6 text-accent-primary" />;
+      case 'worker':
+        return <BugAntIcon className="w-6 h-6 text-accent-primary" />;
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -99,205 +146,105 @@ export const Analytics: React.FC = () => {
         data: chartData.map(point => point.value),
         borderColor: '#3B82F6',
         backgroundColor: 'rgba(59, 130, 246, 0.1)',
-        tension: 0.4,
         fill: true,
-      },
-    ],
+        tension: 0.4
+      }
+    ]
   };
 
-  // Mock data - replace with real data from your backend
-  const mockTrades: Trade[] = [
-    {
-      timestamp: '2024-02-20 10:30:00',
-      pair: 'SOL/USDC',
-      type: 'BUY',
-      price: 100.50,
-      amount: 1.5,
-      profit: 15.75
-    },
-    {
-      timestamp: '2024-02-20 11:15:00',
-      pair: 'BONK/USDC',
-      type: 'SELL',
-      price: 0.00001234,
-      amount: 1000000,
-      profit: -5.20
-    },
-    {
-      timestamp: '2024-02-20 12:00:00',
-      pair: 'WIF/USDC',
-      type: 'BUY',
-      price: 0.45,
-      amount: 222.22,
-      profit: 25.30
-    },
-    {
-      timestamp: '2024-02-20 12:45:00',
-      pair: 'MYRO/USDC',
-      type: 'SELL',
-      price: 0.12,
-      amount: 833.33,
-      profit: 10.15
-    },
-    {
-      timestamp: '2024-02-20 13:30:00',
-      pair: 'POPCAT/USDC',
-      type: 'BUY',
-      price: 0.00002345,
-      amount: 426439.23,
-      profit: -8.90
-    },
-    {
-      timestamp: '2024-02-20 14:15:00',
-      pair: 'BOME/USDC',
-      type: 'SELL',
-      price: 0.00000123,
-      amount: 8130081.30,
-      profit: 12.45
-    },
-    {
-      timestamp: '2024-02-20 15:00:00',
-      pair: 'SAMO/USDC',
-      type: 'BUY',
-      price: 0.05,
-      amount: 2000,
-      profit: 18.75
-    },
-    {
-      timestamp: '2024-02-20 15:45:00',
-      pair: 'BONK/USDC',
-      type: 'SELL',
-      price: 0.00001250,
-      amount: 800000,
-      profit: 22.30
-    },
-    {
-      timestamp: '2024-02-20 16:30:00',
-      pair: 'WIF/USDC',
-      type: 'BUY',
-      price: 0.48,
-      amount: 208.33,
-      profit: -3.15
-    },
-    {
-      timestamp: '2024-02-20 17:15:00',
-      pair: 'MYRO/USDC',
-      type: 'SELL',
-      price: 0.13,
-      amount: 769.23,
-      profit: 15.80
+  const handlePeriodChange = (period: string) => {
+    if (period === '1h' || period === '24h' || period === '7d' || period === '30d') {
+      setSelectedPeriod(period as TimePeriod);
+      // Implement period change logic here
     }
-  ];
-
-  const totalTrades = mockTrades.length;
-  const winningTrades = mockTrades.filter(trade => (trade.profit || 0) > 0).length;
-  const totalProfit = mockTrades.reduce((sum, trade) => sum + (trade.profit || 0), 0);
-  const averageProfit = totalProfit / totalTrades;
-  const bestTrade = Math.max(...mockTrades.map(trade => trade.profit || 0));
-  const worstTrade = Math.min(...mockTrades.map(trade => trade.profit || 0));
-  const successRate = (winningTrades / totalTrades) * 100;
+  };
 
   return (
-    <div className="p-6 h-full flex flex-col space-y-6">
-      {/* Performance Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Performance Card */}
-        <div className="bg-black border border-[#00FF00]/20 p-4 rounded">
-          <div className="text-[#00FF00] font-mono text-lg mb-4">PERFORMANCE</div>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-[#00FF00]/70 font-mono">Success Rate</span>
-              <span className="text-[#00FF00] font-mono">{successRate.toFixed(1)}%</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-[#00FF00]/70 font-mono">Avg Profit/Loss</span>
-              <span className="text-[#00FF00] font-mono">${averageProfit.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-[#00FF00]/70 font-mono">Total Profit</span>
-              <span className="text-[#00FF00] font-mono">${totalProfit.toFixed(2)}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Best Trades Card */}
-        <div className="bg-black border border-[#00FF00]/20 p-4 rounded">
-          <div className="text-[#00FF00] font-mono text-lg mb-4">BEST TRADES</div>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-[#00FF00]/70 font-mono">Best Trade</span>
-              <span className="text-[#00FF00] font-mono">${bestTrade.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-[#00FF00]/70 font-mono">Worst Trade</span>
-              <span className="text-[#FF0000] font-mono">${worstTrade.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-[#00FF00]/70 font-mono">Total Trades</span>
-              <span className="text-[#00FF00] font-mono">{totalTrades}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Market Sentiment Card */}
-        <div className="bg-black border border-[#00FF00]/20 p-4 rounded">
-          <div className="text-[#00FF00] font-mono text-lg mb-4">MARKET SENTIMENT</div>
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-[#00FF00]/70 font-mono">Overall Sentiment</span>
-              <span className="text-[#00FF00] font-mono">BULLISH</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-[#00FF00]/70 font-mono">Volume 24h</span>
-              <span className="text-[#00FF00] font-mono">$2.5M</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-[#00FF00]/70 font-mono">Active Pairs</span>
-              <span className="text-[#00FF00] font-mono">5</span>
-            </div>
-          </div>
+    <div className="h-full flex flex-col space-y-6">
+      {/* Portfolio Value Chart */}
+      <div className="card">
+        <h2 className="text-xl font-bold text-text-primary mb-6">Portfolio Value</h2>
+        <div className="h-[400px]">
+          <EnhancedChart
+            data={formattedChartData}
+            title="Portfolio Value"
+            height={chartHeight}
+            onRangeChange={handlePeriodChange}
+          />
         </div>
       </div>
 
-      {/* Recent Activity Section */}
-      <div className="bg-black border border-[#00FF00]/20 p-4 rounded">
-        <div className="flex justify-between items-center mb-6">
-          <div className="text-[#00FF00] font-mono text-lg">RECENT ACTIVITY</div>
-          <div className="flex space-x-2">
-            {(['1h', '24h', '7d', '30d'] as TimePeriod[]).map((period) => (
-              <button
-                key={period}
-                onClick={() => setSelectedPeriod(period)}
-                className={`px-3 py-1 rounded font-mono text-sm ${
-                  selectedPeriod === period
-                    ? 'bg-[#00FF00]/20 text-[#00FF00]'
-                    : 'text-[#00FF00]/50 hover:text-[#00FF00]/70'
-                }`}
-              >
-                {period}
-              </button>
-            ))}
-          </div>
+      {/* Colony Status */}
+      <div className="card">
+        <h2 className="text-xl font-bold text-text-primary mb-6">Colony Status</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {colonyStatus.map((ant) => (
+            <div 
+              key={ant.id}
+              className="bg-background-primary rounded-lg p-4 border border-background-tertiary"
+            >
+              <div className="flex items-center space-x-3">
+                {getAntIcon(ant.type)}
+                <div>
+                  <h3 className="text-text-primary font-medium">
+                    {ant.type.charAt(0).toUpperCase() + ant.type.slice(1)} #{ant.id.split('-')[1]}
+                  </h3>
+                  <div className="flex items-center space-x-2 mt-1">
+                    <div className={`w-2 h-2 rounded-full ${
+                      ant.status === 'active' ? 'bg-accent-success' : 'bg-accent-error'
+                    }`} />
+                    <span className="text-sm text-text-secondary">
+                      {ant.status.charAt(0).toUpperCase() + ant.status.slice(1)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              {ant.currentTask && (
+                <p className="text-sm text-text-secondary mt-3">{ant.currentTask}</p>
+              )}
+              {ant.capitalAllocated && (
+                <div className="mt-3">
+                  <div className="flex justify-between text-sm text-text-secondary">
+                    <span>Capital Allocated</span>
+                    <span>{ant.capitalAllocated}%</span>
+                  </div>
+                  <div className="w-full bg-background-tertiary rounded-full h-2 mt-1">
+                    <div 
+                      className="bg-accent-primary h-2 rounded-full"
+                      style={{ width: `${ant.capitalAllocated}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+              {ant.activeTrades && (
+                <div className="mt-3 text-sm text-text-secondary">
+                  Active Trades: {ant.activeTrades}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
-        
-        {/* Portfolio Performance Chart */}
-        <div className="h-[400px] w-full">
-          <EnhancedChart
-            data={{
-              labels: chartData.map(point => format(point.timestamp, 'HH:mm')),
-              datasets: [{
-                label: 'Portfolio Value',
-                data: chartData.map(point => point.value),
-                borderColor: '#00FF00',
-                backgroundColor: 'rgba(0, 255, 0, 0.1)',
-                tension: 0.4,
-                fill: true,
-              }]
-            }}
-            title="Portfolio Performance"
-            height={400}
-            onRangeChange={(range) => setSelectedPeriod(range as TimePeriod)}
-          />
+      </div>
+
+      {/* Recent Trades */}
+      <div className="card">
+        <h2 className="text-xl font-bold text-text-primary mb-6">Recent Trades</h2>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-background-tertiary">
+                <th className="text-left py-3 px-4 text-text-secondary text-sm font-medium">Time</th>
+                <th className="text-left py-3 px-4 text-text-secondary text-sm font-medium">Pair</th>
+                <th className="text-left py-3 px-4 text-text-secondary text-sm font-medium">Type</th>
+                <th className="text-right py-3 px-4 text-text-secondary text-sm font-medium">Price</th>
+                <th className="text-right py-3 px-4 text-text-secondary text-sm font-medium">Amount</th>
+                <th className="text-right py-3 px-4 text-text-secondary text-sm font-medium">Profit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* Add trade rows here */}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
